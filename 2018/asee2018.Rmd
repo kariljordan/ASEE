@@ -25,7 +25,7 @@ library(srvyr)
 
 
 ```{r include=FALSE}
-round1data <- readr::read_csv("https://raw.githubusercontent.com/kariljordan/ASEE/master/2018/data_20171108.csv")
+round1data <- readr::read_csv("https://raw.githubusercontent.com/kariljordan/ASEE/master/2018/data_20170701.csv")
 round2data <- readr::read_csv("https://raw.githubusercontent.com/kariljordan/ASEE/master/2018/data_20171108.csv")
 ```
 
@@ -39,7 +39,7 @@ ChangeInConfidence <- round(prop.table(table(data$`ChangeInConfidence`)) * 100)
 ```{r}
 # Function that makes a table of counts and percentages
 # question_n is set by default to the number of respondents in the survey (504). This value may have to be set by question. 
-question_n <- nrow(data)
+question_n <- nrow(round2data)
 
 tally_and_perc <- function(df, colname, na.rm = FALSE, question_n){
   quo_colname <- enquo(colname)
@@ -86,12 +86,12 @@ sum(idx)
 # Field of work, research, or study. Responses are in columns 'Field' through 'Column12'
 
 n_responses_to_field_question <- 
-  n_responses_to_the_question(data, 
+  n_responses_to_the_question(round2data, 
                               from_colname = Field, 
                               to_colname = Column12)
                               
 field_perc <- 
-data %>%
+round2data %>%
   select(Field:Column12) %>% 
   gather(col, field_perc) %>% 
   group_by(field_perc) %>% 
@@ -116,16 +116,16 @@ kable(field_perc,
 status = c("Undergraduate Student", "Graduate Student", "Postdoc", "Faculty", "Industry", "Academic Research Staff", "Other Academic Staff", "Other (please specify)")
 status = factor(status)
 
-data$Status = factor(data$Status, levels = status)
+round2data$Status = factor(round2data$Status, levels = status)
 
-data_status_tally <- 
-  data %>% 
+round2data_status_tally <- 
+  round2data %>% 
   group_by(Status) %>% 
   tally() %>% 
   filter(!is.na(Status)) %>% 
   mutate(perc = round(n/sum(n) * 100, 0))
 
-ggplot(data_status_tally, 
+ggplot(round2data_status_tally, 
        aes(Status, y = 100 * (n/sum(n)),
            n)) +
   geom_bar(stat = "identity", fill="orange") +
@@ -140,29 +140,29 @@ ggplot(data_status_tally,
 ggsave("figures/status.png")
 
 # Count of open responses for Status
-data_statusother_tally <-
-  data %>%
+round2data_statusother_tally <-
+  round2data %>%
   group_by(StatusOther) %>%
   tally() %>%
   filter(!is.na(StatusOther)) %>% 
   mutate(perc = round(n/sum(n) * 100, 0))
 
-kable(data_statusother_tally)
+kable(round2data_statusother_tally)
 ```
 
  
 ```{r}
 # Plot includes Ben's tip to add a percent column to the data_country_tally data frame 
 # before it goes into the ggplot() function. Then you should be able to use reorder on that column name in the ggplot() function
-data_country_tally <-
-data %>%
+round1data_country_tally <-
+round1data %>%
   group_by(Country) %>%
   tally(sort = TRUE) %>%
   mutate(perc = round(100 * (n/sum(n)), 1)) %>% # add the % col
   filter(!is.na(Country)) %>%
   arrange(desc(n))
 
-ggplot(data_country_tally,
+ggplot(round1data_country_tally,
        aes(reorder(Country, perc),
            perc)) +
   geom_bar(stat = "identity", fill = "orange") +
