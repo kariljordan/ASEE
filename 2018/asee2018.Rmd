@@ -1024,6 +1024,18 @@ said_yes <- data_recommended_tally[data_recommended_tally$Recommended == "Yes.",
 kable(data_recommended_tally)
 ```
 
+```{r}
+# Code chunk for likelihood of recommmending a Carpentry workshop
+data_likelyrecommend_tally <-
+  round2data %>% 
+  group_by(`LikelyToRecommend`) %>% 
+  tally() %>% 
+  filter(!is.na(`LikelyToRecommend`)) %>% 
+  arrange(desc(n))
+
+# Table for responses
+kable(data_likelyrecommend_tally)
+```
 
 
 
