@@ -1,2 +1,2 @@
-# ASEE
-Papers for the American Society for Engineering Education
+# About
+Repository to collaborate on ASEE papers
