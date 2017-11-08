@@ -25,41 +25,20 @@ library(srvyr)
 
 
 ```{r include=FALSE}
-data <- readr::read_csv("https://raw.githubusercontent.com/kariljordan/ASEE/master/2018/data_20171108.csv")
+round1data <- readr::read_csv("https://raw.githubusercontent.com/kariljordan/ASEE/master/2018/data_20171108.csv")
+round2data <- readr::read_csv("https://raw.githubusercontent.com/kariljordan/ASEE/master/2018/data_20171108.csv")
 ```
 
 
 ```{r include = FALSE}
-# Highlights in the data
-# Use prop.table() to calculate percentages on a single column.
+# Use prop.table() to calculate percentages on a single column when you want to show highlights in the data
+# Example: Change in Confidence
+ChangeInConfidence <- round(prop.table(table(data$`ChangeInConfidence`)) * 100)
+```
 
-#Change in Confidence
-Confidence_Change <- round(prop.table(table(data$`Change-In-Confidence`)) * 100)
-
-#Programming Usage Before Workshop
-Programming_Usage_Before <- round(prop.table(table(data$`Programming-Usage-Before-Workshop`)) * 100)
-
-#Programming Usage Since Workshop
-Programming_Usage_Since <- round(prop.table(table(data$`Programming-Usage-Since-Workshop`)) * 100)
-
-#Motivated to Seek Knowledge
-Motivated_Seek_Knowledge <- round(prop.table(table(data$`Motivated-Seek-Knowledge`))* 100)
-
-#Made Analyses Reproducible
-Made_Analyses_Reproducible <- round(prop.table(table(data$`Made-Analyses-Reproducible`))* 100)
-
-#Improved Coding Practices
-Improved_Coding_Practices <- round(prop.table(table(data$`Improved Coding Practices`))* 100)
-
-#Gained Confidence with Data
-Gained_Confidence_Data <- round(prop.table(table(data$`Gained-Confidence-With-Data`))* 100)
-Gained_Confidence_Data
-
-#Recommend our Workshops
-Recommended <- round(prop.table(table(data$Recommended))* 100)
-
+```{r}
 # Function that makes a table of counts and percentages
-# question_n is set by default to the number of respondents in the survey - 476. This value may have to be set by question. 
+# question_n is set by default to the number of respondents in the survey (504). This value may have to be set by question. 
 question_n <- nrow(data)
 
 tally_and_perc <- function(df, colname, na.rm = FALSE, question_n){
@@ -94,49 +73,17 @@ df %>%
 idx <- ifelse(rowsums == 0, FALSE, TRUE)
 sum(idx)
 }
-
 ```
 # Introduction
 
-Software Carpentry is a worldwide volunteer organization whose mission is to make scientists more productive, and their findings more reliable, by teaching them foundational computing skills. Established in 1998, it runs short, intensive workshops that cover task automation using the Unix shell, structured programming in Python and R, and version control using tools such as Git. Its sibling organization, Data Carpentry, teaches foundational data science skills. To date, the majority of Software and Data Carpentry workshops have been run in the United States, Canada and the UK. However, there is growing interest elsewhere, and there are active ‘Carpentries’ communities in Australia, New Zealand, South Africa, the Netherlands, Norway and in other countries in Africa and in Central and South America.
-
-While most workshops are favorably assessed by learners at the time of delivery, no systematic, long-term follow-up study has previously been done on the efficacy of the training delivered, nor of the short or longer term impact that such training might have had on learners’ work practices, further skills acquisition, or subsequent career paths. There has also been no useful demographic profiling of learners.
-
-Why should that matter? 
-
-We are outcome-driven organizations interested in continually improving the workshop experience for both our learners and our instructors. Additionally, we are largely volunteers. In order to continue our valuable work of teaching skills to researchers, we need supportive funding either from grant-making bodies or from member institutions, or - ideally - from both. Our case for funding is strengthened if we can provide impartial evidence that proves our workshops have the outcomes we claim. While it is wonderful to have amassed what must now amount to container-sized loads of positive 'sticky note' workshop feedback over the years, funders generally require more solid evidence of achievement before they are willing to cut a check. Establishing value is not just important for funding though: it is important for our growing community of trainers, instructors, lesson maintainers and helpers, all of whom volunteer their time because they believe in the importance of what we do. We owe it to them to show that their time is not wasted - that we are genuinely furthering the cause of efficiently organized, reproducible science. Lastly, we need to demonstrate to our learners that precious time carved out to master computational and data science skills will pay off many times over in time saved further down the track.
-<!-- 
-
-BM: Where do the numbersin this paragraph come from? Better to have them as inline variables rather than hard-coded in the text.
-KJ: I removed the numbers because we don't necessarily need them in this report.
--->
-Data Carpentry's post-workshop survey [results](https://carpentries.github.io/assessment/data-carpentry/postworkshop/report.html) tell us that our respondents are either enthusiastically or very involved in our workshops, they learn a great deal of practical knowledge, and agree that they can immediately apply what they learned at the workshop. Our interest is in establishing, long-term, what impact workshops are having on learners’ confidence in the skills they were taught. 
-
-Therefore, through the generosity of the Moore Data Driven Discovery Initiative, assessment work has been undertaken across both Carpentries to help build an evidence base to complement the large body of existing anecdotal evidence that Carpentry-style training is both useful and effective in improving researchers’ work practices.
-
-To gather the required evidence, Data and Software Carpentry launched a [long-term assessment survey](https://www.surveymonkey.com/r/carpentrieslongtermassessment) in March 2017. We first engaged in a community consultation to determine how best to design and word this survey. The responses from that consultation then guided the development of our long-term assessment strategy. You can read more about the consultation process in this [blog post](http://www.datacarpentry.org/blog/long-term-assessment-strategy/). 
-
-The main goal of the resulting survey was to ask our learners to describe concrete changes they had implemented to their research practices as a result of completing a Carpentries workshop. We also asked whether they now had greater confidence in the tools they had been taught, and whether they had progressed in their careers as a result. The inclusion of multiple choice questions around programming in R or Python helped make the evidence of training efficacy more concrete, comparable and measurable, taking it out of the realm of ‘opinion’ or ‘feeling’, which, while interesting, is not as robust or reliable a marker of success as demonstrable evidence. For instance, ‘I can write a FOR loop to rename and move a batch of files’ is a much more reliable metric of achievement than ‘I can use the shell’.
-
-All of the data collected in this survey was self-reported. It should be noted that there are disadvantages to self-reported surveys. For one, respondents may exaggerate their achievements. Additionally, a respondent’s state of mind while taking the survey may affect her/his answers. Survey results can potentially be biased because those feeling most positive are also those more likely to respond, while learners whose experience was less positive – or even negative - may not bother to answer. To account for this, we compared the results of the long-term survey with that of Data Carpentry’s [post-workshop survey results](https://carpentries.github.io/assessment/data-carpentry/postworkshop/report.html) and Software Carpentry's [post-workshop survey results](https://carpentries.github.io/assessment/software-carpentry/postreport.html). We found consistent patterns of increased confidence and self-efficacy in our learners.
-
-The survey questions and the data used in this analysis are located in the [carpentries/assessment](https://github.com/carpentries/assessment) repo on GitHub. We have already received several pull requests from community members interested in this data. Feel free to use the data and [tell us](mailto: kariljordan@carpentries.org) about your findings.
-
-This analysis includes `r question_n` observations. Not all respondents answered every one of the 26 questions.
 
 # Highlights
 
-The long-term survey assessed confidence, motivation, and other outcomes **more than six months** after respondents attended a Carpentry workshop. Provided below are a few highlights from the data.
 
-+ `r Confidence_Change[3]`% of respondents reported being more confident **in the tools** that were covered during their workshop compared to before the workshop. 
-+ `r Made_Analyses_Reproducible[1] + Made_Analyses_Reproducible[4]`% of respondents have **made their analyses more reproducible** as a result of completing a workshop.
-+ `r Gained_Confidence_Data[1] + Gained_Confidence_Data[4]`% of respondents have gained confidence in **working with data** as a result of completing a workshop.
-+ `r Recommended[3]`% of respondents have **recommended our workshops** to a friend or colleague.
 
 # Respondent Demographics
-```{r include=FALSE}
-# Ben's tip to use 'gather' to go from wide to long format
-# Responses are in columns 'Field' through 'Column12'
+```{r}
+# Field of work, research, or study. Responses are in columns 'Field' through 'Column12'
 
 n_responses_to_field_question <- 
   n_responses_to_the_question(data, 
@@ -154,11 +101,7 @@ data %>%
   filter(!is.na(field_perc)) %>% 
   arrange(desc(n)) %>%
   rename(Field = field_perc) 
-```
 
-Carpentry learners represent a wide range of disciplines ranging from the sciences to engineering. Respondents were asked to indicate their field of research, work, or study by checking all that apply from a list of various disciplines. A breakdown of their responses is provided in the table below. Many of the respondents work in Life Sciences.
-
-```{r}
 kable(field_perc, 
       format = "markdown", 
       digits = getOption("digits"), 
@@ -169,25 +112,21 @@ kable(field_perc,
 ```
 
 ```{r}
-# Code for Status of Respondents
-position = c("Undergraduate Student", "Graduate Student", "Postdoc", "Faculty", "Industry", "Academic Research Staff", "Other Academic Staff", "Other (please specify)")
-position = factor(position)
+# Status of Respondents
+status = c("Undergraduate Student", "Graduate Student", "Postdoc", "Faculty", "Industry", "Academic Research Staff", "Other Academic Staff", "Other (please specify)")
+status = factor(status)
 
-data$Position = factor(data$Position, levels = position)
+data$Status = factor(data$Status, levels = status)
 
-data_position_tally <- 
+data_status_tally <- 
   data %>% 
-  group_by(Position) %>% 
+  group_by(Status) %>% 
   tally() %>% 
-  filter(!is.na(Position)) %>% 
+  filter(!is.na(Status)) %>% 
   mutate(perc = round(n/sum(n) * 100, 0))
 
-# Use the line below to include a table
-
-#kable(data_position_tally, format = "markdown", row.names = FALSE, col.names = c("Position", "n"))
-
-ggplot(data_position_tally, 
-       aes(Position, y = 100 * (n/sum(n)),
+ggplot(data_status_tally, 
+       aes(Status, y = 100 * (n/sum(n)),
            n)) +
   geom_bar(stat = "identity", fill="orange") +
   geom_text(aes(label=n), size= 4, vjust=-0.25) +
@@ -195,23 +134,22 @@ ggplot(data_position_tally,
   theme_classic() +
   xlab("Status") +
   ylab("% Respondents") +
-  ggtitle("Majority of Respondents were Graduate Students") +
+  ggtitle("Figure 1: Respondent's Status") +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme_classic(base_size = 14)
 ggsave("figures/status.png")
+
+# Count of open responses for Status
+data_statusother_tally <-
+  data %>%
+  group_by(StatusOther) %>%
+  tally() %>%
+  filter(!is.na(StatusOther)) %>% 
+  mutate(perc = round(n/sum(n) * 100, 0))
+
+kable(data_statusother_tally)
 ```
 
-```{r include=FALSE}
-# Use code below for in-line text.
-Graduate_Student <- 
-data_position_tally %>% 
-  filter(Position == 'Graduate Student') %>% 
-  pull(perc)
-```
-
-Carpentries workshops are open to individuals from all backgrounds and fields. Attendees vary from students (undergraduate and graduate) and faculty to staff and persons working in industry. `r Graduate_Student`% of our respondents were graduate students.
-
-Below is a breakdown of our respondents by the country in which they attended a Carpentries workshop.
  
 ```{r}
 # Plot includes Ben's tip to add a percent column to the data_country_tally data frame 
@@ -232,21 +170,10 @@ ggplot(data_country_tally,
   xlab("") +
   ylab("Percentage of all participants") +
   coord_flip() +
-  ggtitle("Carpentry Workshop Respondents by Country") +
+  ggtitle("Figure 2: Workshop Respondents by Country") +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme_bw(base_size = 14)
 ggsave("figures/percent_by_country.png")
-
-# Use code below for in-line text.
-USA <- data_country_tally[data_country_tally$Country == 'USA', ]$n
-USA_perc <- filter(data_country_tally, Country == "USA") %>% pull(perc)
-Canada <- data_country_tally[data_country_tally$Country == 'Canada', ]$n
-Canada_perc <- filter(data_country_tally, Country == "Canada") %>% pull(perc)
-UK <- data_country_tally[data_country_tally$Country == 'UK', ]$n
-UK_perc <-  filter(data_country_tally, Country == "UK") %>% pull(perc)
-Australia <- data_country_tally[data_country_tally$Country == 'Australia', ]$n
-Australia_perc <-  filter(data_country_tally, Country == "Australia") %>% pull(perc)
-
 ```
 
 A large portion of Carpentry learners responding to the survey attended a workshop in the United States (`r USA_perc`%), followed by Canada (`r Canada_perc`%) the UK (`r UK_perc`%), and Australia (`r Australia_perc`%).
