@@ -33,7 +33,7 @@ round2data <- readr::read_csv("https://raw.githubusercontent.com/kariljordan/ASE
 ```{r include = FALSE}
 # Use prop.table() to calculate percentages on a single column when you want to show highlights in the data
 # Example: Change in Confidence
-ChangeInConfidence <- round(prop.table(table(data$`ChangeInConfidence`)) * 100)
+ChangeInConfidence <- round(prop.table(table(round2data$`ChangeInConfidence`)) * 100)
 ```
 
 ```{r}
@@ -915,15 +915,13 @@ round2data$`Writing` = factor(round2data$`Writing`, levels = writing)
 Contributed_Writing <- round(prop.table(table(round2data$`Writing`)) * 100)
 ```
 
-
-
 ### Continuous Learning THIS IS WHERE I LEFT OFF
 ```{r}
 # Code chunk for continuous learning 
 
 Learning_Activities <- 
 round2data %>%
-  select(`Activities`:Column57) %>% 
+  select(`ContinuousLearning`:Column63) %>% 
   gather(col, Learning_Activities) %>% 
   group_by(Learning_Activities) %>% 
   tally() %>% 
@@ -931,11 +929,8 @@ round2data %>%
   mutate(`%` =round(n / sum(n) * 100, 0) ) %>% 
   arrange(desc(n)) %>% 
   rename(`Continuous Learning Post-Workshop` = Learning_Activities)
-
-# To use code for Carpentry self-guided material in-line
-carpentry_self_guided <- table(data$Column56)
 ```
-A key finding is that learners continue their learning after completing a workshop. This can take many forms, including participating in short courses (in-person and online) and using self-guided material. We asked respondents to tell us which learning activities (for data management and analysis) they have participated in since completing a Carpentries workshop. The majority of respondents have used non-Carpentries, self-guided material, though `r carpentry_self_guided` responded having used Carpentries' self-guided material. Additionally, greater participation in meetups and in-person short courses has been reported by respondents.
+
 ```{r}
 # Code chunk for table of continuous learning activities
 kable(Learning_Activities, 
@@ -945,17 +940,16 @@ kable(Learning_Activities,
       caption = "Respondents Self-Reported Continuous Learning Activities")
 ```
 
-The matrix below provides a breakdown of the combination of continuous learning activities respondents participated in. For example, 35 respondents have used both Carpentry and non-Carpentry self-guided material since attending a workshop.
 
 ```{r}
 # Code for matrix of continuous learning (thanks Ben for the tip!)
-# Combinations of continuous learning for individual
-learning_cols <- 
-data %>%
-  select(`Activities`:Column57)
+# Combinations of involvement for individual
+involvement_cols <- 
+round2data %>%
+  select(`Involvement`:Column57)
 
 # Matrix 
-m <- as.matrix(learning_cols) 
+m <- as.matrix(involvement_cols) 
 # the unique values in the matrix
 vals <- sort(unique(as.vector(m)))
 
@@ -964,20 +958,18 @@ bigm <- t(apply(m, 1, function(row) match(vals, row, nomatch=0)))
 colnames(bigm) <- vals
 
 # count the co-occurences of each value (diagonal is total number of rows with that value)
-learning_co_occurences  <- as.data.frame(crossprod(bigm>0))
-kable(learning_co_occurences, row.names = TRUE, caption = "Matrix of Common Continuous Learning Activities")
+involvement_co_occurences  <- as.data.frame(crossprod(bigm>0))
+kable(involvement_co_occurences, row.names = TRUE, caption = "Matrix of Common Involvement Activities")
 ```
 
 ## Involvement in the Carpentries 
 
-Learners often become actively involved with Software and/or Data Carpentry after completing a workshop. This involvement can take many forms - joining a mentoring group, becoming a workshop helper, or even becoming an instructor. The table provided below shows how respondents have involved themselves with the Carpentries since completing a workshop. Respondents were asked to check all that apply.
-
 ```{r}
 # Code chunk for involvement with the Carpentries
-# Data in columns 'Carpentry.Involvement through Column51
+# Data in columns 'Involvement' through Column57
 Carpentry_Involvement <- 
-data %>%
-  select(`Carpentry-Involvement`:Column51) %>% 
+round2data %>%
+  select(`Involvement`:Column57) %>% 
   gather(col, Carpentry_Involvement) %>% 
   group_by(Carpentry_Involvement) %>% 
   tally() %>% 
@@ -990,14 +982,14 @@ kable(Carpentry_Involvement,
       caption = "Respondents Self-Reported Inolvement in the Carpentries Post-Workshop")
 ```
 
-The matrix below displays frequent combinations of post-workshop involvement. For example, 16 of the respondents who became Carpentry instructors have attended at least one community call.
+
 
 ```{r}
 # Code for matrix of involvement (thanks Ben for the tip!)
 # Combinations of tools for individual
 involvement_cols <- 
-data %>%
-  select(`Carpentry-Involvement`:Column51)
+round2data %>%
+  select(`Involvement`:Column57)
 
 # Matrix tool-by-tool
 
@@ -1016,10 +1008,10 @@ kable(involvement_co_occurences,
       caption = "Matrix of Common Involvement")
 ```
 
-```{r include=FALSE}
+```{r}
 # Code chunk for whether respondents recommended a workshop
 data_recommended_tally <-
-  data %>% 
+  round2data %>% 
   group_by(Recommended) %>% 
   tally() %>% 
   filter(!is.na(Recommended)) %>% 
@@ -1029,53 +1021,9 @@ data_recommended_tally <-
 said_yes <- data_recommended_tally[data_recommended_tally$Recommended == "Yes.", ]$n
 
 # Table for responses of recommendations
-# kable(data_recommended_tally)
-```
-
-```{r include=FALSE}
-# Code chunk for likelihood of recommmending a Carpentry workshop
-data_likelyrecommend_tally <-
-  data %>% 
-  group_by(`Likely-To-Recommend`) %>% 
-  tally() %>% 
-  filter(!is.na(`Likely-To-Recommend`)) %>% 
-  arrange(desc(n))
-
-# Table for responses
-# kable(data_likelyrecommend_tally)
-```
-
-# Growth Opportunities
-
-We are very excited to know that our workshops are having an impact on learners six months to a year after their attendance. Though the results of this survey are compelling, we do recognize issues for improvement. For example, `r USA_perc`% of respondents completed a workshop in the United States. We are continually discussing ways to broaden participation of our workshops in communities outside of the U.S.
-
-We also realize there are some lessons that are not being taught as frequently as others, namely, the [Shell lesson](http://swcarpentry.github.io/shell-novice/) and the [SQL lesson](http://www.datacarpentry.org/sql-ecology-lesson/). We would like to understand why, and what we can do as a community to see an increase in this lesson being taught.
-
-```{r}
-# extract some values from the likert data to use in the text below
-feeling_neutral_about_receiving_professional_recognition <- 
-  data_agree_likert$results %>% 
-  filter(Item == "Recognition") %>% 
-  pull(Neutral) %>% 
-  round(0)
-  
-either_disagreed_or_strongly_disagreed_received_any_professional_recognition <-   data_agree_likert$results %>% 
-  filter(Item == "Recognition") %>% 
-  mutate(dis_or_strongly_dis = sum(c(`Strongly disagree`, Disagree))) %>% 
-  pull(dis_or_strongly_dis) %>% 
-  round(0)
-    
+kable(data_recommended_tally)
 ```
 
 
-Lastly, `r feeling_neutral_about_receiving_professional_recognition`% of the respondents indicated feeling **neutral** about receiving professional recognition as a result of participating in a Carpentries workshop, and `r either_disagreed_or_strongly_disagreed_received_any_professional_recognition`% either disagreed or strongly disagreed that they had received any professional recognition. We would like to explore community development opportunities that will benefit learners’ personal as well as professional endeavours, so that time spent acquiring important skills for research is adequately recognized and possibly even rewarded.
-
-# Summary
-
-When our learners have successful experiences in our workshops, they are quick to share this positive experience with others. We asked respondents if they had already recommended our workshop, and `r Recommended[3]`% said yes!
-
-This initial analysis of how Carpentries workshops have impacted learners long-term has been extremely insightful. In general, our workshops are helping learners improve their efficiency with managing and analyzing data. Learners are taking advantage of online resources to improve their skills, and many see value in becoming involved longer term with our community.
-
-We will revisit this data when we compare the responses of learners who took a workshop more than a year ago with those who have taken a workshop less than six months ago and from six months to one year ago. Additionally, we will continue to use this survey every six months to collect data from new learners so we can monitor their progress, and add to our growing evidence base on assessment.
 
 
