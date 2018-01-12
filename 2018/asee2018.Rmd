@@ -122,7 +122,7 @@ round2data_status_tally <-
 ggplot(round2data_status_tally, 
        aes(Status, y = 100 * (n/sum(n)),
            n)) +
-  geom_bar(stat = "identity", fill="orange") +
+  geom_bar(stat = "identity", fill="grey") +
   geom_text(aes(label=n), size= 4, vjust=-0.25) +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
   theme_classic() +
