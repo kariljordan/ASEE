@@ -126,7 +126,7 @@ ggplot(round2data_status_tally,
   geom_text(aes(label=n), size= 4, vjust=-0.25) +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
   theme_classic() +
-  xlab("Status") +
+  xlab("Figure 2: Respondents' Status") +
   ylab("% Respondents") +
   ggtitle("") +
   theme(plot.title = element_text(hjust = 0.5)) +
@@ -149,12 +149,12 @@ round1data %>%
 ggplot(round1data_country_tally,
        aes(reorder(Country, perc),
            perc)) +
-  geom_bar(stat = "identity", fill = "orange") +
+  geom_bar(stat = "identity", fill = "grey") +
   theme_classic() +
   xlab("") +
-  ylab("Percentage of all participants") +
+  ylab("Figure 3: Breakdown of Respondents by Country") +
   coord_flip() +
-  ggtitle("Figure 2: Workshop Respondents by Country") +
+  ggtitle("") +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme_bw(base_size = 14)
 ggsave("figures/percent_by_country.png")
@@ -211,13 +211,13 @@ kable(Carpentry_Involvement)
 ggplot(round2data_time_since_tally, 
        aes(`TimeSinceWorkshop`, y = 100 * (n/sum(n)),
            n)) +
-  geom_bar(stat = "identity", fill="orange") +
+  geom_bar(stat = "identity", fill="grey") +
   geom_text(aes(label=n), size= 4 , vjust=-0.25) +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
   theme_classic() +
-  xlab("Time Since Attending Carpentry Workshop") +
+  xlab("Figure 4: Time Since Attending Carpentry Workshop") +
   ylab("% Respondents") +
-  ggtitle("Figure 3: XX") +
+  ggtitle("") +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme_classic(base_size = 14)
 ggsave("figures/time_since_attending_workshop.png")
@@ -237,13 +237,13 @@ round2data_workshops_tally <-
 ggplot(round2data_workshops_tally, 
        aes(`NumWorkshops`, y = 100 * (n/sum(n)),
            n)) +
-  geom_bar(stat = "identity", fill="orange") +
+  geom_bar(stat = "identity", fill="grey") +
   geom_text(aes(label=n), size= 4, vjust=-0.25) +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
   theme_classic() +
-  xlab("# Workshops Attended") +
+  xlab("Figure 5: Number of Workshops Attended") +
   ylab("% Respondents") +
-  ggtitle("Figure 4: XX") +
+  ggtitle("") +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme_classic(base_size = 14)
 ggsave("figures/number_workshops_attended.png")
@@ -367,13 +367,13 @@ programming = factor(programming)
  
   ggplot(round2data_usage_tally, 
         aes(`ProgrammingBefore`, n)) +
-   geom_bar(stat = "identity", fill="orange") +
+   geom_bar(stat = "identity", fill="grey") +
    geom_text(aes(label=n), size= 4) +
    scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
    theme_classic() +
-   xlab("Programming Usage") +
+   xlab("Programming Usage Pre-Workshop [Absolute]") +
    ylab("# Respondents") +
-   ggtitle("Figure 5: XX") +
+   ggtitle("") +
    theme(plot.title = element_text(hjust = 0.5)) +
    theme_classic(base_size = 14)
 ggsave("figures/programming_usage_pre_absolute.png")
@@ -390,7 +390,7 @@ ggsave("figures/programming_usage_pre_absolute.png")
    filter(!is.na(`ProgrammingBefore`)) %>%
    mutate(`ProgrammingBefore` =     factor(`ProgrammingBefore`, levels = programming)) %>%
    ggplot(aes(x = `ProgrammingBefore`, y = 100 * (n/sum(n)))) +
-     geom_bar(stat = "identity", position = "dodge", fill = "orange") +
+     geom_bar(stat = "identity", position = "dodge", fill = "grey") +
      geom_text(aes(label=n), size= 4) +
      scale_x_discrete(labels = function(x) lapply(strwrap(x,
                                                           width = 10,
@@ -398,9 +398,9 @@ ggsave("figures/programming_usage_pre_absolute.png")
                                                   paste,
                                                   collapse = "\n")) +
      theme_classic() +
-     xlab("Programming Usage") +
+     xlab("Programming Usage Post-Workshop") +
      ylab("% respondents") +
-     ggtitle("Figure XX: Pre") +
+     ggtitle("") +
      theme(plot.title = element_text(hjust = 0.5)) +
     theme_classic(base_size = 14)
 ggsave("figures/programming_usage_pre_percent.png")
@@ -424,13 +424,13 @@ ggsave("figures/programming_usage_pre_percent.png")
  
   ggplot(round2data_usage_tally, 
         aes(`ProgrammingSince`, n)) +
-   geom_bar(stat = "identity", fill="orange") +
+   geom_bar(stat = "identity", fill="grey") +
    geom_text(aes(label=n), size= 4) +
    scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
    theme_classic() +
-   xlab("Programming Usage") +
+   xlab("Programming Usage Pre-Workshop [Absolute]") +
    ylab("# Respondents") +
-   ggtitle("Figure XX: Post") +
+   ggtitle("") +
    theme(plot.title = element_text(hjust = 0.5)) +
    theme_classic(base_size = 14)
 ggsave("figures/programming_usage_post_absolute.png")
@@ -446,7 +446,7 @@ tally() %>%
 filter(!is.na(`ProgrammingSince`)) %>%
 mutate(`ProgrammingSince` = factor(`ProgrammingSince`, levels = programming)) %>%
 ggplot(aes(x = `ProgrammingSince`, y = 100 * (n/sum(n)))) +
-geom_bar(stat = "identity", position = "dodge", fill = "orange", na.rm = TRUE ) +
+geom_bar(stat = "identity", position = "dodge", fill = "grey", na.rm = TRUE ) +
 geom_text(aes(label=n), size= 4) + # Adds count to top of bar
 scale_x_discrete(labels = function(x) lapply(strwrap(x,
                                                          width = 10,
@@ -454,9 +454,9 @@ scale_x_discrete(labels = function(x) lapply(strwrap(x,
                                                  paste,
                                                  collapse = "\n")) +
     theme_classic() +
-    xlab("") +
+    xlab("Programming Usage Post-Workshop") +
     ylab("% respondents") +
-    ggtitle("Figure XX: post") +
+    ggtitle("") +
     theme(plot.title = element_text(hjust = 0.5)) +
     theme_classic(base_size = 14)
 ggsave("figures/programming_usage_post_percent.png")
@@ -500,11 +500,11 @@ round2data %>%
                                                  paste,
                                                  collapse = "\n")) +
     theme_classic() +
-    xlab("Programming Usage") +
+    xlab("Figure 6: Respondents' Programming Usage Increased") +
     ylab("% Respondents") +
     scale_fill_discrete(name = "",
                         labels = c("Before Workshop", "After Workshop")) +
-    ggtitle("Respondents' Programming Usage Increased") +
+    ggtitle("") +
     theme(plot.title = element_text(hjust = 0.5)) +
     theme_classic(base_size = 14)
 ggsave("figures/change_in_programming_usage.png") 
@@ -559,7 +559,7 @@ ggplot(stdres,
            fill = sign)) +
   geom_col(position = "dodge", 
            aes(alpha = contrib_0_to_1)) +
-  xlab("") +
+  xlab("Figure 7: Respondents program significantly more often") +
   ylab("Chi-square standardized residuals of\npost-workshop frequencies") +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse = "\n")) +
   scale_fill_manual(name = "",
@@ -567,7 +567,7 @@ ggplot(stdres,
                                  "positive" = "blue"),
                       labels = c("Fewer respondents than \nexpected assuming no effect", 
                                  "More respondents than \nexpected assuming no effect")) +
-  ggtitle("Workshops result in respondents \nprogramming significantly more often") +
+  ggtitle("") +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme_classic(base_size = 14) +
   scale_alpha_continuous("Contribution to \nchi-square value") +
@@ -631,24 +631,9 @@ received_professional_recognition <-
 
 
 ```{r}
-title <- "Figure XX: Perception of Workshop Impact"		
+title <- "Table 3: Perception of Workshop Impact"		
 plot(data_agree_likert, type =c("heat"), panel.arrange = NULL, panel.strip.color = "red", legend.position = "bottom") + ggtitle(title)
 ggsave("figures/workshop_impact_heatmap.png")
-```
-
-
-```{r}
-title <- "Perception of Workshop Impact"
- theme_update(plot.title = element_text(hjust = 0.5))
-plot(data_agree_likert) + ggtitle(title) 
-
-#print(class(data_agree))
- data_agree <- map_if(data_agree,
-                     is.character,
-                     as.factor)
- ggsave("figures/impact_likert.png")
- 
- # The plot works, but the labels are not in the correct order.
 ```
 
 ### Behaviors Respondents Adopted
@@ -708,29 +693,6 @@ kable(Behaviors_Adopted,
       format.args = list(), 
       escape = TRUE)
 ```
-
-
-```{r}
-# Code for matrix of behaviors (thanks Ben for the tip!)
-# Combinations of behaviors adopted for individuals
-behaviors_cols <- 
-round2data %>%
-  select(`Behaviors`:Column32)
-
-# Matrix 
-m <- as.matrix(behaviors_cols) 
-# the unique values in the matrix
-vals <- sort(unique(as.vector(m)))
-
-# rearrange the data so that each value is a column
-bigm <- t(apply(m, 1, function(row) match(vals, row, nomatch=0)))
-colnames(bigm) <- vals
-
-# count the co-occurences of each value (diagonal is total number of rows with that value)
-behaviors_co_occurences  <- as.data.frame(crossprod(bigm>0))
-kable(behaviors_co_occurences, row.names = TRUE, caption = "Matrix of Common Behaviors Adopted Post-Workshop")
-```
-
 
 ```{r heatmap, fig.width=8, fig.height = 8}
 library(tidyverse)
@@ -794,7 +756,6 @@ more_than_perc_more_confident <- mround(perc_more_confident,5)
 
 
 ```{r}
-
 # Use the code below for a table of the data.
 # kable(data_change.in.confidence_tally, format = "markdown", row.names = FALSE, col.names = c("Change in Confidence", "%"))
 
@@ -909,7 +870,7 @@ round2data$`Writing` = factor(round2data$`Writing`, levels = writing)
 Contributed_Writing <- round(prop.table(table(round2data$`Writing`)) * 100)
 ```
 
-### Continuous Learning THIS IS WHERE I LEFT OFF
+### Continuous Learning 
 ```{r}
 # Code chunk for continuous learning 
 
