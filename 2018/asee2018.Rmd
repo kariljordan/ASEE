@@ -1,4 +1,4 @@
-# Two-day workshops build skills and confidence for researchers to work with data.
+# Short format workshops build skills and confidence for researchers to work with data
 Authors: [Kari L. Jordan](https://github.com/kariljordan), [Elizabeth Wickes](https://github.com/elliewix) [Jonah Duckles](https://github.com/jduckles), [Ben Marwick](https://github.com/benmarwick)
 
 `r format(Sys.Date(), "%B %Y")`
@@ -74,14 +74,8 @@ idx <- ifelse(rowsums == 0, FALSE, TRUE)
 sum(idx)
 }
 ```
-# Introduction
 
-
-# Highlights
-
-
-
-# Respondent Demographics
+# Demographics
 ```{r}
 # Field of work, research, or study. Responses are in columns 'Field' through 'Column12'
 
@@ -134,7 +128,7 @@ ggplot(round2data_status_tally,
   theme_classic() +
   xlab("Status") +
   ylab("% Respondents") +
-  ggtitle("Figure 1: Respondent's Status") +
+  ggtitle("") +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme_classic(base_size = 14)
 ggsave("figures/status.png")
