@@ -71,6 +71,8 @@ sum(idx)
 ### Demographics
 
 __Is this your first time completing this survey?__
+
+This question was added to the survey in the second round of data collection, that's why the n is so small. Do not include this in the paper.
 ```{r}
 first_time = c("Yes", "No", "I don't know.")
 first_time = factor(first_time)
@@ -194,7 +196,7 @@ ggplot(round2data_time_since_tally,
   geom_text(aes(label=n), size= 4 , vjust=-0.25) +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
   theme_classic() +
-  xlab("Figure 4: Time Since Attending Carpentry Workshop") +
+  xlab("Figure X: Time Since Attending Carpentry Workshop") +
   ylab("% Respondents") +
   ggtitle("") +
   theme(plot.title = element_text(hjust = 0.5)) +
