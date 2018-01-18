@@ -630,7 +630,10 @@ How would you rate your change in confidence in the tools that were covered duri
 
 ```{r}
 # Code for change in confidence
-confidence = c("I'm more confident now.", "I'm equally confident now.", "I'm less confident now.")
+confidence <-
+  c("I'm less confident now.",
+    "I'm equally confident now.",
+    "I'm more confident now.")
 confidence = factor(confidence)
 
 round1data$`Change-In-Confidence` = factor(round1data$`Change-In-Confidence`, levels = confidence)
@@ -658,6 +661,52 @@ ggplot(data_change.in.confidence_tally,
    theme(plot.title = element_text(hjust = 0.5)) +
    theme_bw(base_size = 14)
 ggsave("figures/change_in_confidence.png")
+```
+
+__Breakdown by Status__
+
+```{r}
+status <- unique(round1data$Position)
+status <- factor(status[!is.na(status)])
+```
+
+What is your position?
+
+```{r}
+status <- factor(status, levels(status)[c(7, 3, 6, 2, 1, 5, 4)])
+# Display ordering.
+print(levels(status))
+
+round1data$Position <-
+  factor(round1data$Position, levels = levels(status))
+
+change_in_confidence_by_status <- round1data %>%
+  group_by(`Change-In-Confidence`, Position) %>%
+  tally() %>%
+  filter(!is.na(`Change-In-Confidence`)) %>%
+  group_by(Position) %>%
+  mutate(n_status = sum(n)) %>%
+  filter(!is.na(Position)) %>%
+  mutate(perc = n / n_status * 100)
+
+ggplot(data = change_in_confidence_by_status,
+       aes(x = `Change-In-Confidence`, y = Position)) +
+  geom_tile(aes(fill = perc), colour = "white") +
+  geom_text(aes(label = paste0(round(perc, 1), "%"))) +
+  scale_fill_gradient("Percent",
+                      low = "white",
+                      high = "blue",
+                      limits = c(0, 100)) +
+  xlab("Change in Confidence") +
+  theme(
+    axis.text.x = element_text(angle = 30, hjust = 1),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.ticks = element_blank(),
+    panel.background = element_blank()
+  )
+
+ggsave("figures/change_in_confidence_by_status.png")
 ```
 
 # Usage of Tools for Research and/or Work
