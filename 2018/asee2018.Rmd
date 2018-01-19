@@ -6,18 +6,13 @@ opts_chunk$set(echo = FALSE,
                message = FALSE,
                warning = FALSE)
 library(tidyverse)
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(readr)
-library(purrr)
-library(tibble)
 library(DBI)
 library(ggmap)
 library(likert)
 library(mapproj)
 library(RColorBrewer)
 library(srvyr)
+library(testthat)
 ```
 
 
@@ -690,6 +685,12 @@ change_in_confidence_by_status <- round1data %>%
   mutate(n_status = sum(n)) %>%
   filter(!is.na(Position)) %>%
   mutate(perc = n / n_status * 100)
+
+# Check that percentage total is 100 for each status (Position).
+test_output <- change_in_confidence_by_status %>%
+  group_by(Position) %>%
+  summarize(total = sum(perc))
+expect_equal(test_output$total, rep(100, length(status)))
 
 ggplot(data = change_in_confidence_by_status,
        aes(x = `Change-In-Confidence`, y = Position)) +
