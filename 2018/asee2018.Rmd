@@ -1070,6 +1070,82 @@ kable(race_perc)
 # Only 8 persons responded to this question, so we will not include this in the report.
 ```
 
+```{r}
+# Table of number of workshops that participants have attended
+round2data %>% 
+  filter(!is.na(NumWorkshops)) %>%
+  select(NumWorkshops) %>%
+  group_by(NumWorkshops) %>%
+  tally() %>%
+  kable(col.names = c("Number of Workshops Attended",
+                      "n"), 
+        caption = "Number of workshops attended (Post-survey)")
+```
+
+```{r}
+# Table of time since workshop attendance
+round2data %>% 
+  filter(!is.na(TimeSinceWorkshop)) %>%
+  select(TimeSinceWorkshop) %>%
+  group_by(TimeSinceWorkshop) %>%
+  tally() %>%
+  kable(col.names = c("Time Since Last Attending Workshop",
+                      "n"), 
+        caption = "Time since workshop attendence (Post-survey)")
+```
+
+```{r}
+table_of_status_by_field <- round2data %>%
+  select(Status, Field:FieldOther) %>%
+  gather(key = "Field",
+         value = "value",
+         -Status,
+         na.rm = TRUE) %>%
+  select(-Field) %>%
+  table() %>%
+  t()
+
+top_12_fields <- table_of_status_by_field  %>%
+  as_tibble() %>%
+  group_by(value) %>%
+  summarize(sum_by_field = sum(n)) %>%
+  arrange(desc(sum_by_field)) %>%
+  head(12) %>%
+  pull(value)
+
+# table of participant counts in each category (multiple selection was possible)
+table_of_status_by_field %>%
+  as_tibble() %>%
+  filter(value %in% top_12_fields) %>%
+  spread(Status, n) %>%
+  kable()
+
+# plot of the same
+table_of_status_by_field %>%
+  as_tibble() %>%
+  filter(value %in% top_12_fields) %>%
+  ggplot(aes(x = Status,
+             y = value,
+             fill = n)) +
+    geom_tile() +
+    geom_text(aes(label = round(n, 0))) +
+    scale_fill_gradient("n",
+                        low = "white",
+                        high = "blue") +
+    labs(title = "Number of Respondants by Field (top 12 most common) and Career Stage",
+         subtitle = "Note: Multiple selections possible per person",
+         y = "Field",
+         x = "Career Stage/Status") +
+    theme(axis.text.x = element_text(angle = 45,
+                                     hjust = 1),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_blank(),
+          panel.background = element_blank())
+
+```
+
+
 # Involvement in the Carpentries
 
 Please indicate your involvement in the Carpentry community since completing a Carpentry workshop. Check all that apply.
