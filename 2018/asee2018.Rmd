@@ -381,6 +381,60 @@ kable(Behaviors_Adopted,
       format.args = list(), 
       escape = TRUE)
 ```
+
+## Behaviors by Group
+
+```{r}
+# Need the count of responses in each Status grouping in order to caluclate
+# percentages in the next step
+respondant_counts_by_group <- round2data %>%
+  group_by(Status) %>%
+  tally() %>%
+  rename(group_sum = n)
+
+# Calulate summary of numer of respondants selecting each bahavior by group
+# Uses a join to the respondant_counts_by_group tibble in order to calulate
+# persentages
+behaviors_adopted_by_group <- round2data %>%
+  select(Status, Behaviors:Column32) %>% 
+  gather(col, Behaviors_Adopted, -Status) %>% 
+  group_by(Behaviors_Adopted, Status) %>% 
+  select(-col) %>%
+  na.omit() %>%
+  table() %>%
+  as_tibble() %>%
+  left_join(respondant_counts_by_group) %>%
+  mutate(Percent = (n / group_sum) * 100) %>%
+  select(Status, Behaviors_Adopted, Percent) 
+
+# Make a table but remove "Other" column beacuse it's full of NAs
+behaviors_adopted_by_group %>%
+  spread(Status, Percent) %>%
+  select(-(starts_with("Other"))) %>%
+  kable(format = "markdown",
+        digits = 1,
+        row.names = NA,
+        col.names = NA,
+        caption = NULL,
+        format.args = list(),
+        escape = TRUE)
+```
+
+```{r, fig.height=6}
+# Remove other column since it's full of NAs
+# Might take this out of final report, but it helps visualize differences
+behaviors_adopted_by_group %>%
+  filter(!grepl("Other", Status)) %>%
+  ggplot(aes(x = Behaviors_Adopted,
+             y = Status,
+             fill = Percent)) +
+    geom_tile() +
+  ggtitle("Behaviors Adopted by Group (percent of respondants)") +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1))
+```
+
+
 # Programming Usage Pre- and Post-Workshop
 
 __Before completing a Carpentries workshop, how often did you use programming languages (R, Python, etc.), databases (Access, SQL, etc.), version control software and/or the shell?__
