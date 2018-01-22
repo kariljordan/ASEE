@@ -820,6 +820,69 @@ ggplot(data = change_in_confidence_by_status,
 ggsave("figures/change_in_confidence_by_status.png")
 ```
 
+__Focus on Engineering__
+
+```{r}
+change_in_conf_eng <- round1data %>%
+  filter(grepl("Engineering", Column6)) %>%
+  group_by(`Change-In-Confidence`) %>%
+  tally() %>%
+  filter(!is.na(`Change-In-Confidence`)) %>%
+  mutate(perc = n / sum(n) * 100)
+
+ggplot(change_in_conf_eng,
+       aes(`Change-In-Confidence`, y = perc, n)) +
+   geom_bar(stat = "identity", fill = "grey") +
+   geom_text(aes(label=n), size= 4, vjust=-0.25) +
+   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10,
+                                                        simplify = FALSE), paste,
+                                                collapse="\n")) +
+   theme_classic() +
+   xlab("Change in Confidence (Engineering)") +
+   ylab("% Respondents") +
+   ggtitle("") +
+   theme(plot.title = element_text(hjust = 0.5)) +
+   theme_bw(base_size = 14)
+ggsave("figures/change_in_confidence_eng.png")
+```
+
+```{r}
+# Breakdown by status.
+change_in_conf_eng_by_status <- round1data %>%
+  filter(grepl("Engineering", Column6)) %>%
+  group_by(`Change-In-Confidence`, Position) %>%
+  tally() %>%
+  filter(!is.na(`Change-In-Confidence`)) %>%
+  group_by(Position) %>%
+  mutate(n_status = sum(n)) %>%
+  filter(!is.na(Position)) %>%
+  mutate(perc = n / n_status * 100)
+
+# Check that percentage total is 100 for each status (Position).
+test_output <- change_in_conf_eng_by_status %>%
+  group_by(Position) %>%
+  summarize(total = sum(perc))
+expect_equal(test_output$total, rep(100, length(status)))
+
+ggplot(data = change_in_conf_eng_by_status,
+       aes(x = `Change-In-Confidence`, y = Position)) +
+  geom_tile(aes(fill = perc), colour = "white") +
+  geom_text(aes(label = n)) +
+  scale_fill_gradient("Percent",
+                      low = "white",
+                      high = "blue",
+                      limits = c(0, 100)) +
+  xlab("Change in Confidence (Engineering)") +
+  theme(
+    axis.text.x = element_text(angle = 30, hjust = 1),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.ticks = element_blank(),
+    panel.background = element_blank()
+  )
+ggsave("figures/change_in_conf_eng_by_status.png")
+```
+
 # Usage of Tools for Research and/or Work
 If you are using the tools you learned in a Carpentries workshop, how are they helping you? Check all that apply.
 
