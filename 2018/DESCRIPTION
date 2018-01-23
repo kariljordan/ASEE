@@ -5,15 +5,10 @@ Authors@R: person("First", "Last", email = "first.last@example.com", role = c("a
 Description: What the package does (one paragraph).
 Depends: R (>= 3.3.1)
 Imports:
+    knitr,
     tidyverse,
     likert,
-    srvyr,
     testthat
-Suggests:
-    DBI,
-    ggmap,
-    mapproj,
-    RColorBrewer
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
