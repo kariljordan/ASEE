@@ -5,7 +5,7 @@ There are two data files used in this paper's analyses:
 + 20171108 is the data file from the second round of responses. The survey was sent out in October 2017.
 
 # Report
-This [RMarkdown report](https://kariljordan.github.io/ASEE/2018/asee2018.html) will be used for the figures in this paper.
+This [RMarkdown report](https://kariljordan.github.io/ASEE/2018/asee2018.html) will be used for the figures in this paper. Click [here](https://github.com/kariljordan/ASEE/blob/master/2018/Narrative.md) for the narrative (introduction, background, etc.)
 
 # Contributors
 The following individuals contributed to the development of the long-term survey, the code for this report, or the write-up of the results: 
