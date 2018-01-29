@@ -7,6 +7,15 @@ There are two data files used in this paper's analyses:
 # Report
 This [RMarkdown report](https://kariljordan.github.io/ASEE/2018/asee2018.html) will be used for the figures in this paper.
 
+# Contributors
+The following individuals contributed to the development of the long-term survey, the code for this report, or the write-up of the results: 
++ [Kari L. Jordan](https://github.com/kariljordan) 
++ [Marianne Corvellec](https://github.com/mkor)  
++ [Elizabeth Wickes](https://github.com/elliewix)
++ [Naupaka Zimmerman](https://github.com/naupaka)
++ [Jonah Duckles](https://github.com/jduckles) 
++ [Tracy Teal](https://github.com/tracykteal) 
+  
 # R Environment
 
 ```r
