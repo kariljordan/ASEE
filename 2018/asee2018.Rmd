@@ -1073,6 +1073,7 @@ ggplot(round1data_country_tally,
   theme(plot.title = element_text(hjust = 0.5)) +
   theme_bw(base_size = 14)
 ggsave("figures/percent_by_country.png")
+kable(round1data_country_tally)
 ```
 
 # Respondent Demographics
