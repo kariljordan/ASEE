@@ -102,7 +102,7 @@ ggplot(round2data_status_tally,
   geom_text(aes(label=n), size= 4, vjust=-0.25) +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
   theme_classic() +
-  xlab("Figure X: Respondents' Status") +
+  xlab("Figure 3: Respondents' Status") +
   ylab("% Respondents") +
   ggtitle("") +
   theme(plot.title = element_text(hjust = 0.5)) +
@@ -598,7 +598,7 @@ round2data %>%
                                                  paste,
                                                  collapse = "\n")) +
     theme_classic() +
-    xlab("Figure 6: Respondents' Programming Usage Increased") +
+    xlab("Figure 4: Respondents' Programming Usage Increased") +
     ylab("% Respondents") +
     scale_fill_discrete(name = "",
                         labels = c("Before Workshop", "After Workshop")) +
@@ -707,7 +707,7 @@ ggplot(stdres,
            fill = sign)) +
   geom_col(position = "dodge",
            aes(alpha = contrib_0_to_1)) +
-  xlab("Figure X: Respondents program significantly more often") +
+  xlab("Figure 5: Respondents program significantly more often") +
   ylab("Chi-square standardized residuals of\npost-workshop frequencies") +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse = "\n")) +
   scale_fill_manual(name = "",
@@ -762,7 +762,7 @@ ggplot(data_change.in.confidence_tally,
    theme_classic() +
    xlab("Change in Confidence") +
    ylab("% Respondents") +
-   ggtitle("") +
+   ggtitle("Figure 5: Change in Confidence") +
    theme(plot.title = element_text(hjust = 0.5)) +
    theme_bw(base_size = 14)
 ggsave("figures/change_in_confidence.png")
@@ -808,7 +808,7 @@ ggplot(data = change_in_confidence_by_status,
                       low = "white",
                       high = "blue",
                       limits = c(0, 100)) +
-  xlab("Change in Confidence") +
+  xlab("Figure 7: Change in Confidence by Status") +
   theme(
     axis.text.x = element_text(angle = 30, hjust = 1),
     panel.grid.major = element_blank(),
@@ -1037,8 +1037,8 @@ received_professional_recognition <-
   sum() %>%
   round(0)
 
-title <- "Table X: Perception of Workshop Impact"
-plot(data_agree_likert, type =c("heat"), panel.arrange = NULL, panel.strip.color = "red", legend.position = "bottom") + ggtitle(title)
+title <- ""
+plot(data_agree_likert, type =c("heat"), panel.arrange = NULL, panel.strip.color = "red", legend.position = "bottom") + ggtitle(title) + labs(x = "", y="Figure 6: Perception of Workshop Impact")
 ggsave("figures/workshop_impact_heatmap.png")
 
 # How can we change the axis labels to make them easier to understand?
@@ -1067,7 +1067,7 @@ ggplot(round1data_country_tally,
   geom_bar(stat = "identity", fill = "grey") +
   theme_classic() +
   xlab("") +
-  ylab("Figure X: Breakdown of Respondents by Country") +
+  ylab("Figure 2: Breakdown of Respondents by Country") +
   coord_flip() +
   ggtitle("") +
   theme(plot.title = element_text(hjust = 0.5)) +
