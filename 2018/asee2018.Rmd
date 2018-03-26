@@ -733,25 +733,25 @@ How would you rate your change in confidence in the tools that were covered duri
 ```{r}
 # Code for change in confidence
 confidence <-
-  c("I'm less confident now.",
-    "I'm equally confident now.",
-    "I'm more confident now.")
-confidence = factor(confidence)
+  c("I’m less confident now.",
+    "I’m equally confident now.",
+    "I’m more confident now.")
+confidence <- factor(confidence)
 
-round1data$`Change-In-Confidence` = factor(round1data$`Change-In-Confidence`, levels = confidence)
+round2data$ChangeInConfidence <- factor(round2data$ChangeInConfidence, levels = confidence)
 
-data_change.in.confidence_tally <-
-  round1data %>%
-  group_by(`Change-In-Confidence`) %>%
+data_change_in_confidence_tally <-
+  round2data %>%
+  group_by(ChangeInConfidence) %>%
   tally() %>%
-  filter(!is.na(`Change-In-Confidence`)) %>%
-  mutate(perc = round(n / sum(n) * 100, 0 ))
+  filter(!is.na(ChangeInConfidence)) %>%
+  mutate(perc = round(n / sum(n) * 100, 0))
 
 # Use the code below for a table of the data.
-# kable(data_change.in.confidence_tally, format = "markdown", row.names = FALSE, col.names = c("Change in Confidence", "%"))
+# kable(data_change_in_confidence_tally, format = "markdown", row.names = FALSE, col.names = c("Change in Confidence", "%"))
 
-ggplot(data_change.in.confidence_tally,
-       aes(`Change-In-Confidence`, y = 100 * (n/sum(n)),
+ggplot(data_change_in_confidence_tally,
+       aes(ChangeInConfidence, y = 100 * (n/sum(n)),
            n)) +
    geom_bar(stat = "identity", fill = "blue") +
    geom_text(aes(label=n), size= 4, vjust=-0.25) +
@@ -768,37 +768,37 @@ ggsave("figures/change_in_confidence.png")
 __Breakdown by Status__
 
 ```{r}
-status <- unique(round1data$Position)
+status <- unique(round2data$Status)
 status <- factor(status[!is.na(status)])
 ```
 
 What is your position?
 
 ```{r}
-status <- factor(status, levels(status)[c(7, 3, 6, 2, 1, 5, 4)])
+status <- factor(status, levels(status)[c(1, 2, 3, 4, 6, 7, 5)])
 # Display ordering.
 print(levels(status))
 
-round1data$Position <-
-  factor(round1data$Position, levels = levels(status))
+round2data$Status <-
+  factor(round2data$Status, levels = levels(status))
 
-change_in_confidence_by_status <- round1data %>%
-  group_by(`Change-In-Confidence`, Position) %>%
+change_in_confidence_by_status <- round2data %>%
+  group_by(ChangeInConfidence, Status) %>%
   tally() %>%
-  filter(!is.na(`Change-In-Confidence`)) %>%
-  group_by(Position) %>%
+  filter(!is.na(ChangeInConfidence)) %>%
+  group_by(Status) %>%
   mutate(n_status = sum(n)) %>%
-  filter(!is.na(Position)) %>%
+  filter(!is.na(Status)) %>%
   mutate(perc = n / n_status * 100)
 
 # Check that percentage total is 100 for each status (Position).
 test_output <- change_in_confidence_by_status %>%
-  group_by(Position) %>%
+  group_by(Status) %>%
   summarize(total = sum(perc))
 expect_equal(test_output$total, rep(100, length(status)))
 
 ggplot(data = change_in_confidence_by_status,
-       aes(x = `Change-In-Confidence`, y = Position)) +
+       aes(x = ChangeInConfidence, y = Status)) +
   geom_tile(aes(fill = perc), colour = "white") +
   geom_text(aes(label = paste0(round(perc, 1), "%"))) +
   scale_fill_gradient("Percent",
@@ -820,16 +820,21 @@ ggsave("figures/change_in_confidence_by_status.png")
 __Focus on Engineering__
 
 ```{r}
-change_in_conf_eng <- round1data %>%
+change_in_conf_eng <- round2data %>%
   filter(grepl("Engineering", Column6)) %>%
-  group_by(`Change-In-Confidence`) %>%
+  group_by(ChangeInConfidence) %>%
   tally() %>%
-  filter(!is.na(`Change-In-Confidence`)) %>%
+  filter(!is.na(ChangeInConfidence)) %>%
   mutate(perc = n / sum(n) * 100)
 
 ggplot(change_in_conf_eng,
+<<<<<<< HEAD
        aes(`Change-In-Confidence`, y = perc, n)) +
    geom_bar(stat = "identity", fill = "blue") +
+=======
+       aes(ChangeInConfidence, y = perc, n)) +
+   geom_bar(stat = "identity", fill = "grey") +
+>>>>>>> 81cc6d6983cb5010a0b229550a23cebd0641e03a
    geom_text(aes(label=n), size= 4, vjust=-0.25) +
    scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10,
                                                         simplify = FALSE), paste,
@@ -845,24 +850,24 @@ ggsave("figures/change_in_confidence_eng.png")
 
 ```{r}
 # Breakdown by status.
-change_in_conf_eng_by_status <- round1data %>%
+change_in_conf_eng_by_status <- round2data %>%
   filter(grepl("Engineering", Column6)) %>%
-  group_by(`Change-In-Confidence`, Position) %>%
+  group_by(ChangeInConfidence, Status) %>%
   tally() %>%
-  filter(!is.na(`Change-In-Confidence`)) %>%
-  group_by(Position) %>%
+  filter(!is.na(ChangeInConfidence)) %>%
+  group_by(Status) %>%
   mutate(n_status = sum(n)) %>%
-  filter(!is.na(Position)) %>%
+  filter(!is.na(Status)) %>%
   mutate(perc = n / n_status * 100)
 
-# Check that percentage total is 100 for each status (Position).
+# Check that percentage total is 100 for each status.
 test_output <- change_in_conf_eng_by_status %>%
-  group_by(Position) %>%
+  group_by(Status) %>%
   summarize(total = sum(perc))
 expect_equal(test_output$total, rep(100, length(status)))
 
 ggplot(data = change_in_conf_eng_by_status,
-       aes(x = `Change-In-Confidence`, y = Position)) +
+       aes(x = ChangeInConfidence, y = Status)) +
   geom_tile(aes(fill = perc), colour = "white") +
   geom_text(aes(label = n)) +
   scale_fill_gradient("Percent",
