@@ -98,11 +98,11 @@ round2data_status_tally <-
 ggplot(round2data_status_tally,
        aes(Status, y = 100 * (n/sum(n)),
            n)) +
-  geom_bar(stat = "identity", fill="grey") +
+  geom_bar(stat = "identity", fill="blue") +
   geom_text(aes(label=n), size= 4, vjust=-0.25) +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
   theme_classic() +
-  xlab("Figure 3: Respondents' Status") +
+  xlab("Status") +
   ylab("% Respondents") +
   ggtitle("") +
   theme(plot.title = element_text(hjust = 0.5)) +
@@ -155,7 +155,7 @@ round2data_workshops_tally <-
 ggplot(round2data_workshops_tally,
        aes(`NumWorkshops`, y = 100 * (n/sum(n)),
            n)) +
-  geom_bar(stat = "identity", fill="grey") +
+  geom_bar(stat = "identity", fill="blue") +
   geom_text(aes(label=n), size= 4, vjust=-0.25) +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
   theme_classic() +
@@ -182,7 +182,7 @@ __Time since completing last Carpentries workshop__
 ggplot(round2data_time_since_tally,
        aes(`TimeSinceWorkshop`, y = 100 * (n/sum(n)),
            n)) +
-  geom_bar(stat = "identity", fill="grey") +
+  geom_bar(stat = "identity", fill="blue") +
   geom_text(aes(label=n), size= 4 , vjust=-0.25) +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
   theme_classic() +
@@ -460,7 +460,7 @@ programming = factor(programming)
 
   ggplot(round2data_usage_tally,
         aes(`ProgrammingBefore`, n)) +
-   geom_bar(stat = "identity", fill="grey") +
+   geom_bar(stat = "identity", fill="blue") +
    geom_text(aes(label=n), size= 4, vjust=-0.25) +
    scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
    theme_classic() +
@@ -484,7 +484,7 @@ ggsave("figures/programming_usage_pre_absolute.png")
    filter(!is.na(`ProgrammingBefore`)) %>%
    mutate(`ProgrammingBefore` =     factor(`ProgrammingBefore`, levels = programming)) %>%
    ggplot(aes(x = `ProgrammingBefore`, y = 100 * (n/sum(n)))) +
-     geom_bar(stat = "identity", position = "dodge", fill = "grey") +
+     geom_bar(stat = "identity", position = "dodge", fill = "blue") +
      geom_text(aes(label=n), size= 4, vjust=-0.25) +
      scale_x_discrete(labels = function(x) lapply(strwrap(x,
                                                           width = 10,
@@ -520,7 +520,7 @@ __Since completing a Carpentries workshop, how often do you currently use progra
 
   ggplot(round2data_usage_tally,
         aes(`ProgrammingSince`, n)) +
-   geom_bar(stat = "identity", fill="grey") +
+   geom_bar(stat = "identity", fill="blue") +
    geom_text(aes(label=n), size= 4, vjust=-0.25) +
    scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
    theme_classic() +
@@ -542,7 +542,7 @@ tally() %>%
 filter(!is.na(`ProgrammingSince`)) %>%
 mutate(`ProgrammingSince` = factor(`ProgrammingSince`, levels = programming)) %>%
 ggplot(aes(x = `ProgrammingSince`, y = 100 * (n/sum(n)))) +
-geom_bar(stat = "identity", position = "dodge", fill = "grey", na.rm = TRUE ) +
+geom_bar(stat = "identity", position = "dodge", fill = "blue", na.rm = TRUE ) +
 geom_text(aes(label=n), size= 4, vjust=-0.25) + # Adds count to top of bar
 scale_x_discrete(labels = function(x) lapply(strwrap(x,
                                                          width = 10,
@@ -584,27 +584,24 @@ round2data %>%
   filter(!is.na(key),
          !is.na(value))
 
-  ggplot(pre_and_post_usage,
-         aes(x = factor(value,
-                        levels = programming),
-             y = perc,
-             fill = key)) +
-    geom_bar(stat = "identity",
-             position = "dodge") +
-    geom_text(aes(label=n), size= 4, vjust=-0.25, position = position_dodge(width = 1)) +
+  ggplot(pre_and_post_usage, aes(x = factor(value, levels = programming), y = perc, fill = key)) +
+    geom_bar(stat = "identity", position=position_dodge()) +
+    geom_text(aes(label=n), size= 4, vjust=-0.25, 
+              position = position_dodge(width = 1)) + 
+    scale_fill_manual(values = c("red","blue")) +
     scale_x_discrete(labels = function(x) lapply(strwrap(x,
                                                          width = 10,
                                                          simplify = FALSE),
                                                  paste,
                                                  collapse = "\n")) +
     theme_classic() +
-    xlab("Figure 4: Respondents' Programming Usage Increased") +
+    xlab("Programming Usage") +
     ylab("% Respondents") +
     scale_fill_discrete(name = "",
                         labels = c("Before Workshop", "After Workshop")) +
     ggtitle("") +
     theme(plot.title = element_text(hjust = 0.5)) +
-    theme_classic(base_size = 14)
+    theme_classic(base_size = 11.5)
 ggsave("figures/change_in_programming_usage.png")
 ```
 
@@ -756,7 +753,7 @@ data_change.in.confidence_tally <-
 ggplot(data_change.in.confidence_tally,
        aes(`Change-In-Confidence`, y = 100 * (n/sum(n)),
            n)) +
-   geom_bar(stat = "identity", fill = "grey") +
+   geom_bar(stat = "identity", fill = "blue") +
    geom_text(aes(label=n), size= 4, vjust=-0.25) +
    scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse="\n")) +
    theme_classic() +
@@ -832,7 +829,7 @@ change_in_conf_eng <- round1data %>%
 
 ggplot(change_in_conf_eng,
        aes(`Change-In-Confidence`, y = perc, n)) +
-   geom_bar(stat = "identity", fill = "grey") +
+   geom_bar(stat = "identity", fill = "blue") +
    geom_text(aes(label=n), size= 4, vjust=-0.25) +
    scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10,
                                                         simplify = FALSE), paste,
@@ -1038,7 +1035,7 @@ received_professional_recognition <-
   round(0)
 
 title <- ""
-plot(data_agree_likert, type =c("heat"), panel.arrange = NULL, panel.strip.color = "red", legend.position = "bottom") + ggtitle(title) + labs(x = "", y="Figure 6: Perception of Workshop Impact")
+plot(data_agree_likert, type =c("heat"), panel.arrange = NULL, panel.strip.color = "blue", legend.position = "bottom") + ggtitle(title) + labs(x = "Factor", y="Level of Agreement")
 ggsave("figures/workshop_impact_heatmap.png")
 
 # How can we change the axis labels to make them easier to understand?
@@ -1064,10 +1061,10 @@ round1data %>%
 ggplot(round1data_country_tally,
        aes(reorder(Country, perc),
            perc)) +
-  geom_bar(stat = "identity", fill = "grey") +
+  geom_bar(stat = "identity", fill = "blue") +
   theme_classic() +
-  xlab("") +
-  ylab("Figure 2: Breakdown of Respondents by Country") +
+  xlab("Country") +
+  ylab("% Respondents") +
   coord_flip() +
   ggtitle("") +
   theme(plot.title = element_text(hjust = 0.5)) +
