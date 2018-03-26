@@ -704,7 +704,7 @@ ggplot(stdres,
            fill = sign)) +
   geom_col(position = "dodge",
            aes(alpha = contrib_0_to_1)) +
-  xlab("Figure 5: Respondents program significantly more often") +
+  xlab("Programming Usage") +
   ylab("Chi-square standardized residuals of\npost-workshop frequencies") +
   scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10, simplify = FALSE), paste, collapse = "\n")) +
   scale_fill_manual(name = "",
@@ -828,13 +828,8 @@ change_in_conf_eng <- round2data %>%
   mutate(perc = n / sum(n) * 100)
 
 ggplot(change_in_conf_eng,
-<<<<<<< HEAD
-       aes(`Change-In-Confidence`, y = perc, n)) +
+       aes(`ChangeInConfidence`, y = perc, n)) +
    geom_bar(stat = "identity", fill = "blue") +
-=======
-       aes(ChangeInConfidence, y = perc, n)) +
-   geom_bar(stat = "identity", fill = "grey") +
->>>>>>> 81cc6d6983cb5010a0b229550a23cebd0641e03a
    geom_text(aes(label=n), size= 4, vjust=-0.25) +
    scale_x_discrete(labels = function(x) lapply(strwrap(x, width = 10,
                                                         simplify = FALSE), paste,
