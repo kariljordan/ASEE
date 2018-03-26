@@ -656,6 +656,7 @@ ggsave("figures/change_in_programming_usage_by_group.png")
 
 
 __Pre/Post Residuals__
+
 ```{r}
 # The code below from Ben provides a chi-square plot of the pre/post residuals
 # Let's talk about this plot and whether to include it. If it's not easy to understand we shouldn't
@@ -759,7 +760,7 @@ ggplot(data_change_in_confidence_tally,
    theme_classic() +
    xlab("Change in Confidence") +
    ylab("% Respondents") +
-   ggtitle("Figure 5: Change in Confidence") +
+   ggtitle("") +
    theme(plot.title = element_text(hjust = 0.5)) +
    theme_bw(base_size = 14)
 ggsave("figures/change_in_confidence.png")
@@ -805,7 +806,7 @@ ggplot(data = change_in_confidence_by_status,
                       low = "white",
                       high = "blue",
                       limits = c(0, 100)) +
-  xlab("Figure 7: Change in Confidence by Status") +
+  xlab("Change in Confidence by Status") +
   theme(
     axis.text.x = element_text(angle = 30, hjust = 1),
     panel.grid.major = element_blank(),
