@@ -505,8 +505,8 @@ __Since completing a Carpentries workshop, how often do you currently use progra
 ```{r}
 # The code below is for post-workshop programming usage (count)
 # Programming Usage Post-Carpentry Workshop [Absolute Plot]
-  programming = c("I have not been using tools like these.", "Less than once per year.", "Several times per year.", "Monthly.", "Weekly.", "Daily.")
-  programming = factor(programming)
+  programming <- c("I have not been using tools like these.", "Less than once per year.", "Several times per year.", "Monthly.", "Weekly.", "Daily.")
+  programming <- factor(programming)
 
  round2data$`ProgrammingSince` = factor(round2data$`ProgrammingSince`, levels = programming)
 
@@ -585,10 +585,9 @@ round2data %>%
          !is.na(value))
 
   ggplot(pre_and_post_usage, aes(x = factor(value, levels = programming), y = perc, fill = key)) +
-    geom_bar(stat = "identity", position=position_dodge()) +
-    geom_text(aes(label=n), size= 4, vjust=-0.25, 
-              position = position_dodge(width = 1)) + 
-    scale_fill_manual(values = c("red","blue")) +
+    geom_bar(stat = "identity", position = "dodge") +
+    geom_text(aes(label=n), size= 4, vjust=-0.25,
+              position = position_dodge(width = 1)) +
     scale_x_discrete(labels = function(x) lapply(strwrap(x,
                                                          width = 10,
                                                          simplify = FALSE),
@@ -597,8 +596,9 @@ round2data %>%
     theme_classic() +
     xlab("Programming Usage") +
     ylab("% Respondents") +
-    scale_fill_discrete(name = "",
-                        labels = c("Before Workshop", "After Workshop")) +
+    scale_fill_manual(name = "",
+                        labels = c("Before Workshop", "After Workshop"),
+                        values = c("red", "blue")) +
     ggtitle("") +
     theme(plot.title = element_text(hjust = 0.5)) +
     theme_classic(base_size = 11.5)
